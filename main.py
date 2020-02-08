@@ -16,3 +16,4 @@ cp = CentralProcess(ui, sp)
 
 MainWindow.show()
 sys.exit(app.exec())
+a = 1
