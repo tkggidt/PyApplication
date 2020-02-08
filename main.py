@@ -1,18 +1,24 @@
 import sys
 from PyQt5 import QtCore, QtWidgets
 from mainwindow import Ui_MainWindow
+from dialog import Ui_Dialog
 from serial_process import SerialProcess
 from central_process import CentralProcess
 
 QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
 app = QtWidgets.QApplication(sys.argv)
 MainWindow = QtWidgets.QMainWindow()
+Dialog = QtWidgets.QDialog()
 
-ui = Ui_MainWindow()
-ui.setupUi(MainWindow)
+mainUi = Ui_MainWindow()
+mainUi.setupUi(MainWindow)
+
+diaUi = Ui_Dialog()
+diaUi.setupUi(Dialog)
 
 sp = SerialProcess()
-cp = CentralProcess(ui, sp)
+cp = CentralProcess(mainUi, sp)
 
 MainWindow.show()
+Dialog.show()
 sys.exit(app.exec())
