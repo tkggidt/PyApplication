@@ -1,6 +1,24 @@
-
+from PyQt5.QtWidgets import QApplication,  QMainWindow, QDialog, QWidget
+from mainwindow import Ui_MainWindow
+from dialog import Ui_Dialog
+from widget import Ui_widget
 import threading
 import time
+
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        QMainWindow.__init__(self)
+        self.mainUi = Ui_MainWindow()
+        self.mainUi.setupUi(self)
+
+
+class Widget(QWidget):
+    def __init__(self):
+        QWidget.__init__(self)
+        self.widUi = Ui_widget()
+        self.widUi.setupUi(self)
+
 
 threadLock = threading.Lock()
 
@@ -31,7 +49,7 @@ class DataProcess(threading.Thread):
                             self.current_cache.pop(0)
                         threadLock.release()
                         current_data.clear()
-                        print(self.current_cache)
+                        #print(self.current_cache)
                 elif temp_str[0] == 'A':
                     value = int(temp_str[1:5])
                     angle_data.append(value)
@@ -65,19 +83,20 @@ class DataProcess2(threading.Thread):
                     self.string = ""
 
 
-
-
 class CentralProcess:
 
-    def __init__(self, ui, ser):
+    def __init__(self, ui1, ui2, fp, ser):
         super().__init__()
-        self.ui = ui
+        self.ui1 = ui1
+        self.ui2 = ui2
         self.ser = ser
-        self.ui.pushButton.clicked.connect(self.test_function)
-        self.ui.textEdit.append("Can you see it")
+        self.fp = fp
+        self.ui1.mainUi.pushButton1.clicked.connect(self.test_function1)
+        self.ui1.mainUi.pushButton2.clicked.connect(self.test_function2)
+        self.ui1.mainUi.textEdit.append("Can you see it")
 
 
-    def test_function(self):
+    def test_function1(self):
         count = 10
         display = ''
         while count > 0:
@@ -85,7 +104,11 @@ class CentralProcess:
             if data:
                 display += data
                 count -= 1
-        self.ui.textEdit.append(display)
+        self.ui1.mainUi.textEdit.append(display)
+
+    def test_function2(self):
+        self.ui2.widUi.gridLayout.addWidget(self.fp, 1, 1, 1, 8)
+        self.ui2.show()
 
 
 
